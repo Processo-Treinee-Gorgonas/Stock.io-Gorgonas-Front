@@ -15,9 +15,12 @@ export default function HomePage() {
         {/* --- Seção Hero (Conteúdo) --- */}
         <section className="w-full h-[45vh] flex items-center">
           <div className="w-full max-w-7xl mx-auto px-8 flex items-center h-full">
-            <div className="text-white max-w-3xl">
+            <div className="text-white ">
               <h1 className="text-7xl font-bold leading-tight">
-                Do CAOS à organização, em alguns cliques
+                Do CAOS à organização,
+              </h1>
+              <h1 className="text-7xl font-bold leading-tight ml-50">
+                em alguns cliques
               </h1>
             </div>
             <div className="absolute bottom-0 right-8 w-235 h-150 -mb-50">
