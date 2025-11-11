@@ -1,12 +1,23 @@
-'use client'
-import { useAuth } from "@/app/contexts/AuthContext"; 
+'use client'; // 1. OBRIGATÓRIO: Permite usar 'useState' e 'useEffect'
+
+import Link from 'next/link';
+import { useAuth } from '../app/contexts/AuthContext';
+import { useState, useEffect } from 'react';
 
 export function Navbar() {
-  const { user, logout, isLoading } = useAuth();
+
+  const { user, logout, isLoading: isAuthLoading } = useAuth();
+
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
     <nav className=" w-full h-23 bg-black flex items-center justify-between px-8">
-      <a href="/">
+
+  {/* --- Logo --- */}
+      <Link href="/">
         <div className="flex items-center">
           <img
             src="/LOGOStock.io.png"
@@ -14,45 +25,50 @@ export function Navbar() {
             className="h-9 object-contain"
           />
         </div>
-      </a>
-      {isLoading ? (
-        null
+      </Link>
+
+        {(!isMounted || isAuthLoading) ? (
+        
+        // MOSTRA UM PLACEHOLDER VAZIO
+        <div className="h-9 w-40" /> // Ajuste o tamanho
+
       ) : user ? (
-        <>
-          <div className="flex items-center space-x-6">
-            <a href="/carrinho">
-              <div
-                className="h-9 w-9 bg-contain bg-no-repeat bg-center 
+          /* CASO 1: LOGADO */
+          <>
+            <div className="flex items-center space-x-6">
+              <Link href="/carrinho">
+                <div
+                  className="h-9 w-9 bg-contain bg-no-repeat bg-center 
                          bg-[url('/sacola.png')] 
                          hover:bg-[url('/sacola-hover.png')]
                          transition-all duration-200"
-                role="img"
-                aria-label="Sacola de compras"
-              />
-            </a>
-            <a href="/loja">
-              <div
-                className="h-9 w-9 bg-contain bg-no-repeat bg-center 
+                  role="img"
+                  aria-label="Sacola de compras"
+                />
+              </Link>
+              <Link href="/loja">
+                <div
+                  className="h-9 w-9 bg-contain bg-no-repeat bg-center 
                          bg-[url('/lojinha.png')] 
                          hover:bg-[url('/lojinha-hover.png')]
                          transition-all duration-200"
-                role="img"
-                aria-label="Loja"
-              />
-            </a>
-            <a href="/perfil">
-              <div
-                className="h-9 w-9 bg-contain bg-no-repeat bg-center 
+                  role="img"
+                  aria-label="Loja"
+                />
+              </Link>
+              <Link href="/perfil">
+                <div
+                  className="h-9 w-9 bg-contain bg-no-repeat bg-center 
                              bg-[url('/avatar-placeholder.png')] 
                              hover:bg-[url('/avatar-hover.png')]
                              transition-all duration-200"
-                role="img"
-                aria-label="Perfil"
-              />
-            </a>
-            <button type="button" onClick={logout}>
-              <div
-                className="h-9 w-9 bg-contain bg-no-repeat bg-center 
+                  role="img"
+                  aria-label="Perfil"
+                />
+              </Link>
+              <button onClick={logout}>
+                <div
+                  className="h-9 w-9 bg-contain bg-no-repeat bg-center 
                              bg-[url('/logout.png')] 
                              hover:bg-[url('/logout-hover.png')]
                              transition-all duration-200"
@@ -63,11 +79,20 @@ export function Navbar() {
           </div>
         </>
 
-      ) : (
-        <>
-          <div className="flex items-center space-x-20 px-8">
+                  role="img"
+                  aria-label="Sair"
+                />
+              </button>
+            </div>
+          </>
+
+        ) : (
+
+          /* CASO 2: DESLOGADO */
+          <>
+          <div className="flex items-center space-x-20 px-8">            
             <div className="flex items-center space-x-6">
-              <a href="/carrinho">
+              <Link href="/carrinho">
                 <div
                   className="h-9 w-9 bg-contain bg-no-repeat bg-center 
                          bg-[url('/sacola.png')] 
@@ -76,8 +101,8 @@ export function Navbar() {
                   role="img"
                   aria-label="Sacola de compras"
                 />
-              </a>
-              <a href="/loja">
+              </Link>
+              <Link href="/loja">
                 <div
                   className="h-9 w-9 bg-contain bg-no-repeat bg-center 
                          bg-[url('/lojinha.png')] 
@@ -86,23 +111,24 @@ export function Navbar() {
                   role="img"
                   aria-label="Loja"
                 />
-              </a>
+              </Link>
             </div>
-            <a
+            <Link
               href="/login"
               className="text-white font-medium hover:text-[#6A38F3]"
             >
               LOGIN
-            </a>
-            <a
+            </Link>
+            <Link
               href="/cadastro"
               className="bg-[#6A38F3] text-white font-bold py-2 px-6 rounded-[15px] hover:bg-[#FFFF] hover:text-[#6A38F3]"
             >
               CADASTRE-SE
-            </a>
-          </div>
-        </>
-      )}
+            </Link>
+            </div>
+          </>
+          
+        )}
     </nav>
   );
 }
